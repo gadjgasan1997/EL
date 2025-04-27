@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+        <PublishSingleFile>true</PublishSingleFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
+      <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.24126.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\EL.Application.CodeGeneration\EL.Application.CodeGeneration.csproj" />
+      <ProjectReference Include="..\Application\EL.Application.StaticAnalysis\EL.Application.StaticAnalysis.csproj" />
+      <ProjectReference Include="..\Infrastructure\EL.Infrastructure\EL.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>
