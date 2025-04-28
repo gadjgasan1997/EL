@@ -1,8 +1,10 @@
 using System.Reflection;
+using System.IO.Abstractions;
 using EL.Domain.Share.SeedWork;
-using EL.Infrastructure.Services;
 using EL.CommonUtils.Reflection.Extensions;
 using EL.CommonUtils.Reflection.Helpers;
+using EL.Infrastructure.Services.Executor;
+using EL.Infrastructure.Services.SourceCodeProvider;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EL.Infrastructure.Extensions;
@@ -20,7 +22,9 @@ public static class ServiceCollectionExtensions
     {
         var assemblies = AssemblyHelpers.GetAllAssembliesWithReferences().ToArray();
         services.RegisterDomainServices(assemblies);
-        services.AddSingleton<Executor>();
+        services.AddSingleton<IExecutor, Executor>();
+        services.AddSingleton<IFileSystem, FileSystem>();
+        services.AddSingleton<ISourceCodeProvider, SourceCodeProvider>();
         return services;
     }
     

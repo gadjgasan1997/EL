@@ -6,23 +6,28 @@ namespace EL;
 [ExcludeFromCodeCoverage]
 internal class ExecuteCommand : CliRootCommand
 {
-    internal ExecuteCommand() : base("EL interpreter")
+    internal ExecuteCommand() : base("EL Compiler")
     {
-        PathArgument = new CliOption<FileInfo>(name: "path")
+        ProjectDirectory = new CliArgument<string>(name: "directory")
         {
-            Description = "Path to input file"
+            Description = "Directory of the project"
         };
-        Add(PathArgument);
+        Add(ProjectDirectory);
         
-        DumpOption = new CliOption<bool>(name: "--dump", aliases: ["-d", "/d"])
+        FilesRelativePaths = new CliArgument<string>(name: "files")
         {
-            Description = "Show dump data of interpreter",
-            DefaultValueFactory = _ => false
+            Description = "Files in the project"
         };
-        Add(DumpOption);
+        Add(FilesRelativePaths);
     }
     
-    internal CliOption<FileInfo> PathArgument { get; }
+    /// <summary>
+    /// Директория проекта
+    /// </summary>
+    internal CliArgument<string> ProjectDirectory { get; }
     
-    internal CliOption<bool> DumpOption { get; }    
+    /// <summary>
+    /// Список относительных путей к файлам
+    /// </summary>
+    internal CliArgument<string> FilesRelativePaths { get; }    
 }
