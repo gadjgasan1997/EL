@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EL.CommonUtils", "src\Utils
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EL.Domain.Share", "src\Domain\EL.Domain.Share\EL.Domain.Share.csproj", "{33504E82-EFB4-47DA-B8D9-BF258537D048}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EL.Infrastructure.LexerRegexGenerator", "src\Infrastructure\EL.Infrastructure.LexerRegexGenerator\EL.Infrastructure.LexerRegexGenerator.csproj", "{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,7 @@ Global
 		{EE69A755-A681-4BBA-AE44-62392E4D4737} = {B927D55D-946A-443B-A95D-85605C1DFC1B}
 		{0741B673-9FF9-41BA-A1CE-0941E1AE7545} = {55180DF9-2507-463D-9C49-4CA72E1C14A9}
 		{33504E82-EFB4-47DA-B8D9-BF258537D048} = {7928E1B7-D578-4603-84A1-63292CCADC5A}
+		{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1} = {33A3233E-17C5-405A-8D90-2B049B0F3D52}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{49C7E10D-C31B-4731-8D1F-8B828CDA6C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -93,5 +96,9 @@ Global
 		{33504E82-EFB4-47DA-B8D9-BF258537D048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33504E82-EFB4-47DA-B8D9-BF258537D048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33504E82-EFB4-47DA-B8D9-BF258537D048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

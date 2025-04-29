@@ -15,6 +15,11 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Domain\EL.Domain.Frontend\EL.Domain.Frontend.csproj" />
       <ProjectReference Include="..\..\Utils\EL.CommonUtils\EL.CommonUtils.csproj" />
+      <ProjectReference
+              Include="..\EL.Infrastructure.LexerRegexGenerator\EL.Infrastructure.LexerRegexGenerator.csproj"
+              OutputItemType="Analyzer"
+              ReferenceOutputAssembly="false"
+              PrivateAssets="all" />
     </ItemGroup>
-        
+    
 </Project>
