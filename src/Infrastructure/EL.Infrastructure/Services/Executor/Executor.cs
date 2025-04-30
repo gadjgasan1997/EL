@@ -2,7 +2,11 @@
 
 internal class Executor : IExecutor
 {
-    public int Invoke(string projectDirectory, string[] filesRelativePaths)
+    public int Invoke(
+        string compiledAssemblyName,
+        string compiledAssemblyOutputPath,
+        string projectDirectory,
+        string[] filesRelativePaths)
     {
         return 0;
     }

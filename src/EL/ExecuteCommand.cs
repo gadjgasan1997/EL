@@ -8,6 +8,18 @@ internal class ExecuteCommand : CliRootCommand
 {
     internal ExecuteCommand() : base("EL Compiler")
     {
+        CompiledAssemblyName = new CliArgument<string>(name: "assemblyName")
+        {
+            Description = "Name of an assembly",
+        };
+        Add(CompiledAssemblyName);
+        
+        CompiledAssemblyOutputPath = new CliArgument<string>(name: "assemblyOutputPath")
+        {
+            Description = "Output path for generated assembly"
+        };
+        Add(CompiledAssemblyOutputPath);
+        
         ProjectDirectory = new CliArgument<string>(name: "directory")
         {
             Description = "Directory of the project"
@@ -20,6 +32,16 @@ internal class ExecuteCommand : CliRootCommand
         };
         Add(FilesRelativePaths);
     }
+    
+    /// <summary>
+    /// Название компилируемой сборки
+    /// </summary>
+    internal CliArgument<string> CompiledAssemblyName { get; }
+    
+    /// <summary>
+    /// Путь для файлов компилируемой сборки
+    /// </summary>
+    internal CliArgument<string> CompiledAssemblyOutputPath { get; }
     
     /// <summary>
     /// Директория проекта

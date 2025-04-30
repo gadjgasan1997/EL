@@ -16,6 +16,14 @@ internal static partial class Program
         ExecuteCommand command = new();
         command.SetAction(result =>
         {
+            var compiledAssemblyName = result
+                .GetValue(command.CompiledAssemblyName)
+                .CheckNotNullOrEmpty(nameof(command.CompiledAssemblyName));
+            
+            var compiledAssemblyOutputPath = result
+                .GetValue(command.CompiledAssemblyOutputPath)
+                .CheckNotNullOrEmpty(nameof(command.CompiledAssemblyOutputPath));
+            
             var projectDirectory = result
                 .GetValue(command.ProjectDirectory)
                 .CheckNotNullOrEmpty(nameof(command.ProjectDirectory));
@@ -28,7 +36,11 @@ internal static partial class Program
             
             using var serviceProvider = GetServiceProvider();
             var executor = serviceProvider.GetRequiredService<IExecutor>();
-            return executor.Invoke(projectDirectory, filesRelativePaths);
+            return executor.Invoke(
+                compiledAssemblyName,
+                compiledAssemblyOutputPath,
+                projectDirectory,
+                filesRelativePaths);
         });
         
         return command;
