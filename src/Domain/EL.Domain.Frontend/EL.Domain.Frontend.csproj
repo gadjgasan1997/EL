@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Utils\EL.CommonUtils\EL.CommonUtils.csproj" />
       <ProjectReference Include="..\EL.Domain.Share\EL.Domain.Share.csproj" />
     </ItemGroup>
 

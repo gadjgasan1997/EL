@@ -33,6 +33,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{B927D55D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EL.CommonUtils", "src\Utils\EL.CommonUtils\EL.CommonUtils.csproj", "{EE69A755-A681-4BBA-AE44-62392E4D4737}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{55180DF9-2507-463D-9C49-4CA72E1C14A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleELProject", "SampleELProject", "{0741B673-9FF9-41BA-A1CE-0941E1AE7545}"
+	ProjectSection(SolutionItems) = preProject
+		samples\SampleELProject\HelloWorld.elproj = samples\SampleELProject\HelloWorld.elproj
+		samples\SampleELProject\if.el = samples\SampleELProject\if.el
+		samples\SampleELProject\while.el = samples\SampleELProject\while.el
+		samples\SampleELProject\for.el = samples\SampleELProject\for.el
+		samples\SampleELProject\call.el = samples\SampleELProject\call.el
+		samples\SampleELProject\functions.el = samples\SampleELProject\functions.el
+		samples\SampleELProject\checkSemicolon.el = samples\SampleELProject\checkSemicolon.el
+		samples\SampleELProject\types.el = samples\SampleELProject\types.el
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EL.Domain.Share", "src\Domain\EL.Domain.Share\EL.Domain.Share.csproj", "{33504E82-EFB4-47DA-B8D9-BF258537D048}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EL.Infrastructure.LexerRegexGenerator", "src\Infrastructure\EL.Infrastructure.LexerRegexGenerator\EL.Infrastructure.LexerRegexGenerator.csproj", "{A33F4F33-A0FA-4B7B-884E-DFC5A56D13A1}"

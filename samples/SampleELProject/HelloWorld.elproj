@@ -1,0 +1,5 @@
+<Project>
+  <Target Name="Build">
+    <Exec Command="call ..\..\src\EL\bin\Debug\net9.0\EL.exe" />
+  </Target>
+</Project>

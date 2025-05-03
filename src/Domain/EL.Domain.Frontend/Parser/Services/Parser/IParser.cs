@@ -1,18 +1,18 @@
 ﻿using EL.Domain.Share.SeedWork;
-using EL.Domain.Frontend.Lexer;
 using EL.Domain.Frontend.Parser.Ast;
+using EL.Domain.Frontend.Lexer.TokensEnumerator;
 
 namespace EL.Domain.Frontend.Parser.Services.Parser;
 
 /// <summary>
 /// Парсер
 /// </summary>
-public interface IParser : IDomainService
+public interface IParser : ITransientService
 {
     /// <summary>
     /// Парсит список токенов в АСТ
     /// </summary>
-    /// <param name="tokens">Список токенов</param>
+    /// <param name="tokens">Токены</param>
     /// <returns>АСТ</returns>
-    IAbstractSyntaxTree Parse(IReadOnlyCollection<Token> tokens);
+    IAbstractSyntaxTree Parse(ITokensEnumerator tokens);
 }

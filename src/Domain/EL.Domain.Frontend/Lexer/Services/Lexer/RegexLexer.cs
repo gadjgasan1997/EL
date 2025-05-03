@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using EL.Domain.Frontend.Lexer.CodeCoordinates;
 using EL.Domain.Frontend.Lexer.Services.RegexProvider;
 using EL.Domain.Frontend.Lexer.Services.TokenTypesProvider;
+using EL.Domain.Frontend.Lexer.TokensEnumerator;
 
 namespace EL.Domain.Frontend.Lexer.Services.Lexer;
 
@@ -12,8 +13,10 @@ internal class RegexLexer(
     ITokenTypesProvider tokenTypesProvider) : ILexer
 {
     /// <inheritdoc cref="ILexer.GetTokens" />
-    public IReadOnlyCollection<Token> GetTokens(string text) =>
-        GetTokensCore(text).Where(token => !token.Type.CanIgnore).ToList();
+    public ITokensEnumerator GetTokens(string text) =>
+        new TokensEnumerator.TokensEnumerator(
+            tokenTypesProvider,
+            GetTokensCore(text).Where(token => !token.Type.CanIgnore).ToList());
     
     private IEnumerable<Token> GetTokensCore(string text)
     {

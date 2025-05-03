@@ -10,7 +10,7 @@ public interface IAbstractSyntaxTreeNode :
     IVisitable<IAbstractSyntaxTreeNode>
 {
     /// <summary>
-    /// Роидателская нода
+    /// Родительская нода
     /// </summary>
     public IAbstractSyntaxTreeNode Parent { get; }
     
