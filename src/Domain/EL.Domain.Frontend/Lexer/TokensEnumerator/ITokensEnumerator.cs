@@ -8,22 +8,22 @@ namespace EL.Domain.Frontend.Lexer.TokensEnumerator;
 public interface ITokensEnumerator : IEnumerator<Token>
 {
     /// <summary>
-    /// Ожидает, что текущий токен имеет тег <paramref name="tag" />.
+    /// Ожидает, что текущий токен имеет тип <paramref name="type" />.
     /// Дополнительно проверяет значение токена на совпадение с <paramref name="value" />, если оно указано.
     /// В случае успешной проверки возвращает токен и устанавливает текущим следующий.
     /// </summary>
-    /// <param name="tag">Тег</param>
+    /// <param name="type">Тип</param>
     /// <param name="value">Значение</param>
     /// <returns>Токен</returns>
-    Token Expect(string tag, string? value = null);
+    Token Expect(TokenType type, string? value = null);
     
     /// <summary>
-    /// Ожидает, что текущий токен имеет один из тегов <paramref name="tags" />.
+    /// Ожидает, что текущий токен является одним из типов <paramref name="types" />.
     /// В случае успешной проверки возвращает токен и устанавливает текущим следующий.
     /// </summary>
-    /// <param name="tags">Теги</param>
+    /// <param name="types">Типы</param>
     /// <returns>Токен</returns>
-    Token ExpectAny(string[] tags);
+    Token ExpectAny(TokenType[] types);
     
     /// <summary>
     /// Ожидает, что текущий токен является оператором.
@@ -44,20 +44,20 @@ public interface ITokensEnumerator : IEnumerator<Token>
     Token ExpectKeyword(Keyword keyword);
     
     /// <summary>
-    /// Определяет, что текущий токен является токеном с тегом <paramref name="tag" />.
+    /// Определяет, что текущий токен имеет тип <paramref name="type" />.
     /// Дополнительно проверяет значение токена на совпадение с <paramref name="value" />, если оно указано.
     /// </summary>
-    /// <param name="tag">Тег</param>
+    /// <param name="type">Тип</param>
     /// <param name="value">Значение</param>
     /// <returns>Признак</returns>
-    bool CurrentIs(string tag, string? value = null);
+    bool CurrentIs(TokenType type, string? value = null);
     
     /// <summary>
-    /// Определяет, что текущий токен имеет один из тегов <paramref name="tags" />.
+    /// Определяет, что текущий токен является одним из типов <paramref name="types" />.
     /// </summary>
-    /// <param name="tags">Тег</param>
+    /// <param name="types">Типы</param>
     /// <returns>Признак</returns>
-    bool CurrentIsAny(string[] tags);
+    bool CurrentIsAny(TokenType[] types);
     
     /// <summary>
     /// Определяет, что текущий токен является оператором
@@ -75,16 +75,18 @@ public interface ITokensEnumerator : IEnumerator<Token>
     
     /// <summary>
     /// Проходится по всем переданным действиям, выполняя первое из списка
-    /// в случае совпадения указанной строки в <paramref name="tuples.tag" /> и тега текущего токена.
+    /// в случае совпадения указанного в <paramref name="tuples.type" />
+    /// типа токена и типа текущего токена.
     /// </summary>
     /// <param name="tuples">Список действий</param>
     /// <typeparam name="T">Тип результата</typeparam>
     /// <returns>Результат</returns>
-    T ForCurrent<T>(params (string tag, Func<string, T> func)[] tuples);
+    T ForCurrent<T>(params (TokenType type, Func<TokenType, T> func)[] tuples);
     
     /// <summary>
     /// Проходится по всем переданным действиям, выполняя первое из списка
-    /// в случае совпадения указанной строки в <paramref name="tuples.keyword" /> и тега текущего токена.
+    /// в случае совпадения указанного в <paramref name="tuples.keyword" />
+    /// типа токена и типа текущего токена.
     /// </summary>
     /// <param name="tuples">Список действий</param>
     /// <typeparam name="T">Тип результата</typeparam>

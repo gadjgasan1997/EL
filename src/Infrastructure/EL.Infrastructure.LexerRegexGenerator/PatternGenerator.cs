@@ -15,7 +15,7 @@ public class PatternGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var tokenTypes = TokenTypes.Stream.OrderBy(type => type.Priority).ToList();
-        var pattern = string.Join("|", tokenTypes.Select(type => $"(?<{type.Tag}>{type.Pattern})"));
+        var pattern = string.Join("|", tokenTypes.Select(type => $"(?<{type.Value}>{type.Pattern})"));
         var content = tokenTypes.Count == 0
             ? "\"\""
             : $"\"\"\"{pattern}\"\"\"";

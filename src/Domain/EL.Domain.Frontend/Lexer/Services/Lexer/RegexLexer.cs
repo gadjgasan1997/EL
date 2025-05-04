@@ -15,7 +15,6 @@ internal class RegexLexer(
     /// <inheritdoc cref="ILexer.GetTokens" />
     public ITokensEnumerator GetTokens(string text) =>
         new TokensEnumerator.TokensEnumerator(
-            tokenTypesProvider,
             GetTokensCore(text).Where(token => !token.Type.CanIgnore).ToList());
     
     private IEnumerable<Token> GetTokensCore(string text)
@@ -25,7 +24,7 @@ internal class RegexLexer(
         {
             foreach (var type in tokenTypesProvider)
             {
-                var group = match.Groups[type.Tag];
+                var group = match.Groups[type.Value];
                 if (!group.Success) continue;
                 
                 var segment = new Segment(

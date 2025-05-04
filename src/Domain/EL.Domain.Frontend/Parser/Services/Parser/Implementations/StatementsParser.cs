@@ -2,6 +2,7 @@
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
 using static EL.Domain.Share.Dictionaries.TokenTypes;
+using static EL.Domain.Share.Dictionaries.TokenType;
 using static EL.Domain.Share.Dictionaries.Keyword;
 // ReSharper disable InvertIf
 
@@ -13,16 +14,16 @@ internal partial class TopDownParser
     private IEnumerable<StatementListItem> ParseStatementList()
     {
         while (
-            _tokens.CurrentIsAny(ElAllTypesTokensTags) ||
-            _tokens.CurrentIs(IdentifierTag) ||
-            _tokens.CurrentIsAny(ElLiteralsTokensTags) ||
-            _tokens.CurrentIs(LeftParenTag) ||
-            _tokens.CurrentIs(LeftCurlTag) ||
+            _tokens.CurrentIsAny(ElAllTypesTokens) ||
+            _tokens.CurrentIs(Identifier) ||
+            _tokens.CurrentIsAny(ElLiteralsTokens) ||
+            _tokens.CurrentIs(LeftParen) ||
+            _tokens.CurrentIs(LeftCurl) ||
             _tokens.CurrentIsKeyword())
         {
             var listItem = ParseStatementListItem();
             if (listItem.NeedSemicolon)
-                _tokens.Expect(SemicolonTag);
+                _tokens.Expect(Semicolon);
             
             yield return listItem;
             
@@ -34,19 +35,19 @@ internal partial class TopDownParser
     
     private StatementListItem ParseStatementListItem() =>
         _tokens.CurrentIsKeyword(Class) ||
-        _tokens.CurrentIsAny(ElAllTypesTokensTags)
+        _tokens.CurrentIsAny(ElAllTypesTokens)
             ? ParseDeclaration()
             : ParseStatement();
     
     private Statement ParseStatement()
     {
-        if (_tokens.CurrentIs(IdentifierTag))
+        if (_tokens.CurrentIs(Identifier))
         {
             var expression = ParseExpression();
             return new ExpressionStatement(expression);
         }
         
-        if (_tokens.CurrentIs(LeftCurlTag))
+        if (_tokens.CurrentIs(LeftCurl))
             return ParseStatementsBlock();
         
         return _tokens.ForCurrentKeyword<Statement>(
@@ -60,10 +61,10 @@ internal partial class TopDownParser
     
     private StatementsBlock ParseStatementsBlock()
     {
-        _tokens.Expect(LeftCurlTag);
+        _tokens.Expect(LeftCurl);
         
         var statementList = ParseStatementList().ToList();
-        _tokens.Expect(RightCurlTag);
+        _tokens.Expect(RightCurl);
         
         return new StatementsBlock(statementList);
     }
@@ -71,10 +72,10 @@ internal partial class TopDownParser
     private IfStatement ParseIfStatement()
     {
         _tokens.ExpectKeyword(If);
-        _tokens.Expect(LeftParenTag);
+        _tokens.Expect(LeftParen);
         
         var expression = ParseExpression();
-        _tokens.Expect(RightParenTag);
+        _tokens.Expect(RightParen);
         
         var statement = ParseStatement();
         if (_tokens.CurrentIsKeyword(Else))
@@ -91,10 +92,10 @@ internal partial class TopDownParser
     private WhileStatement ParseWhileStatement()
     {
         _tokens.ExpectKeyword(While);
-        _tokens.Expect(LeftParenTag);
+        _tokens.Expect(LeftParen);
         
         var expression = ParseExpression();
-        _tokens.Expect(RightParenTag);
+        _tokens.Expect(RightParen);
         
         var statement = ParseStatement();
         return new WhileStatement(expression, statement);
@@ -103,16 +104,16 @@ internal partial class TopDownParser
     private ForStatement ParseForStatement()
     {
         _tokens.ExpectKeyword(For);
-        _tokens.Expect(LeftParenTag);
+        _tokens.Expect(LeftParen);
         
-        var declaration = _tokens.CurrentIs(SemicolonTag) ? null : (VariableDeclaration) ParseDeclaration();
-        _tokens.Expect(SemicolonTag);
+        var declaration = _tokens.CurrentIs(Semicolon) ? null : (VariableDeclaration) ParseDeclaration();
+        _tokens.Expect(Semicolon);
         
         var condition = ParseExpression();
-        _tokens.Expect(SemicolonTag);
+        _tokens.Expect(Semicolon);
         
-        var iteration = _tokens.CurrentIs(RightParenTag) ? null : ParseExpression();
-        _tokens.Expect(RightParenTag);
+        var iteration = _tokens.CurrentIs(RightParen) ? null : ParseExpression();
+        _tokens.Expect(RightParen);
         
         var body = ParseStatement();
         return new ForStatement(declaration, condition, iteration, body);
@@ -134,7 +135,7 @@ internal partial class TopDownParser
     {
         _tokens.ExpectKeyword(Return);
         
-        var expression = _tokens.CurrentIs(SemicolonTag) ? null : ParseExpression();
+        var expression = _tokens.CurrentIs(Semicolon) ? null : ParseExpression();
         return new ReturnStatement(expression);
     }
 }

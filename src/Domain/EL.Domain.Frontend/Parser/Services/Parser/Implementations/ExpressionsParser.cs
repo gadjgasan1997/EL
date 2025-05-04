@@ -1,9 +1,11 @@
 ﻿using System.Text.RegularExpressions;
+using EL.Domain.Share.Dictionaries;
 using EL.Domain.Frontend.Parser.Exceptions;
-using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.LeftHandSideExpressions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.PrimaryExpressions;
+using ElType = EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.ElType;
+using static EL.Domain.Share.Dictionaries.TokenType;
 using static EL.Domain.Share.Dictionaries.TokenTypes;
 using static EL.Domain.Share.Dictionaries.Operator;
 using static System.Globalization.CultureInfo;
@@ -17,9 +19,9 @@ internal partial class TopDownParser
     private Expression ParseExpression()
     {
         var left = ParseTernary();
-        if (left is LeftHandSideExpression lhs && _tokens.CurrentIs(AssignTag))
+        if (left is LeftHandSideExpression lhs && _tokens.CurrentIs(Assign))
         {
-            _tokens.Expect(AssignTag);
+            _tokens.Expect(Assign);
             
             var right = ParseExpression();
             return new AssignmentExpression(lhs, right);
@@ -31,12 +33,12 @@ internal partial class TopDownParser
     private Expression ParseTernary()
     {
         var left = ParseNullCoalescing();
-        while (_tokens.CurrentIs(QuestionTag))
+        while (_tokens.CurrentIs(Question))
         {
-            _tokens.Expect(QuestionTag);
+            _tokens.Expect(Question);
             
             var then = ParseExpression();
-            _tokens.Expect(ColonTag);
+            _tokens.Expect(Colon);
             
             var @else = ParseExpression();
             return new TernaryOperatorExpression(left, then, @else);
@@ -169,7 +171,7 @@ internal partial class TopDownParser
     private Expression ParseCallExpression()
     {
         var expression = ParsePrimaryExpression();
-        if (_tokens.CurrentIs(LeftParenTag))
+        if (_tokens.CurrentIs(LeftParen))
         {
             var id = (IdentifierExpression) expression;
             var parameters = ParseCallParameters().ToList();
@@ -181,11 +183,11 @@ internal partial class TopDownParser
     
     private IEnumerable<CallParameterExpression> ParseCallParameters()
     {
-        _tokens.Expect(LeftParenTag);
+        _tokens.Expect(LeftParen);
         
-        if (_tokens.CurrentIs(RightParenTag))
+        if (_tokens.CurrentIs(RightParen))
         {
-            _tokens.Expect(RightParenTag);
+            _tokens.Expect(RightParen);
             yield break;
         }
         
@@ -194,38 +196,38 @@ internal partial class TopDownParser
             var expression = ParseExpression();
             yield return new CallParameterExpression(expression);
             
-            if (_tokens.CurrentIs(RightParenTag))
+            if (_tokens.CurrentIs(RightParen))
             {
-                _tokens.Expect(RightParenTag);
+                _tokens.Expect(RightParen);
                 break;
             }
             
-            _tokens.Expect(CommaTag);
+            _tokens.Expect(Comma);
         }
     }
     
     private Expression ParsePrimaryExpression()
     {
-        if (_tokens.CurrentIs(LeftParenTag))
+        if (_tokens.CurrentIs(LeftParen))
         {
-            _tokens.Expect(LeftParenTag);
+            _tokens.Expect(LeftParen);
             
             var expression = ParseExpression();
-            _tokens.Expect(RightParenTag);
+            _tokens.Expect(RightParen);
             
             return expression;
         }
         
-        if (_tokens.CurrentIs(IdentifierTag))
+        if (_tokens.CurrentIs(Identifier))
         {
-            var token = _tokens.Expect(IdentifierTag);
-            if (_tokens.CurrentIs(AssignTag))
+            var token = _tokens.Expect(Identifier);
+            if (_tokens.CurrentIs(Assign))
                 return new VariableAssignmentExpression(new IdentifierExpression(token.Value));
             
             return new IdentifierExpression(token.Value);
         }
         
-        if (_tokens.CurrentIsAny(ElLiteralsTokensTags))
+        if (_tokens.CurrentIsAny(ElLiteralsTokens))
             return ParseLiteralExpression();
         
         throw new UnexpectedTokenException(_tokens.Current);
@@ -234,27 +236,27 @@ internal partial class TopDownParser
     private LiteralExpression ParseLiteralExpression()
     {
         return _tokens.ForCurrent(
-            (DoubleLiteralTag, _ => ParseLiteralCore(
-                DoubleLiteralTag,
+            (DoubleLiteral, _ => ParseLiteralCore(
+                DoubleLiteral,
                 value => double.Parse(value, InvariantCulture))),
-            (IntLiteralTag, _ => ParseLiteralCore(
-                IntLiteralTag,
+            (IntLiteral, _ => ParseLiteralCore(
+                IntLiteral,
                 value => int.Parse(value, InvariantCulture))),
-            (BooleanLiteralTag, _ => ParseLiteralCore(
-                BooleanLiteralTag,
+            (BooleanLiteral, _ => ParseLiteralCore(
+                BooleanLiteral,
                 value => bool.Parse(value))),
-            (NullLiteralTag, _ => ParseLiteralCore(
-                NullLiteralTag,
+            (NullLiteral, _ => ParseLiteralCore(
+                NullLiteral,
                 _ => null)),
-            (StringLiteralTag, _ => ParseLiteralCore(
-                StringLiteralTag,
+            (StringLiteral, _ => ParseLiteralCore(
+                StringLiteral,
                 value => Regex.Unescape(value.Trim('"')))));
         
-        LiteralExpression ParseLiteralCore(string typeTag, Func<string, object?> func)
+        LiteralExpression ParseLiteralCore(TokenType tokenType, Func<string, object?> func)
         {
-            var token = _tokens.Expect(typeTag);
+            var token = _tokens.Expect(tokenType);
             return new LiteralExpression(
-                new ElType(new IdentifierExpression(typeTag)),
+                new ElType(new IdentifierExpression(tokenType.Value)),
                 func(token.Value));
         }
     }

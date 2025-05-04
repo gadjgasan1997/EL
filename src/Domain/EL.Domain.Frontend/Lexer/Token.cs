@@ -9,7 +9,7 @@ namespace EL.Domain.Frontend.Lexer;
 /// <param name="Type">Тип</param>
 /// <param name="Segment">Сегмент</param>
 /// <param name="Value">Значение</param>
-public record Token(TokenTypes.TokenType Type, Segment Segment, string Value)
+public record Token(TokenType Type, Segment Segment, string Value)
 {
     /// <inheritdoc cref="object.ToString" />
     public override string ToString() => $"{Type} {Segment}: {Value}";

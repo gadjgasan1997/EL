@@ -2,8 +2,6 @@
 using EL.CommonUtils.Extensions;
 using EL.Domain.Share.Dictionaries;
 using EL.Domain.Frontend.Parser.Exceptions;
-using EL.Domain.Frontend.Lexer.Services.TokenTypesProvider;
-using static EL.Domain.Share.Dictionaries.TokenTypes;
 
 namespace EL.Domain.Frontend.Lexer.TokensEnumerator;
 
@@ -14,11 +12,8 @@ internal class TokensEnumerator : ITokensEnumerator
     private readonly IEnumerator<Token> _enumerator;
 #pragma warning restore CA1859
     
-    private readonly ITokenTypesProvider _provider;
-    
-    public TokensEnumerator(ITokenTypesProvider provider, List<Token> tokens)
+    public TokensEnumerator(List<Token> tokens)
     {
-        _provider = provider;
         _enumerator = tokens.GetEnumerator();
         _enumerator.MoveNext();
     }
@@ -39,12 +34,12 @@ internal class TokensEnumerator : ITokensEnumerator
     public void Dispose() => _enumerator.Dispose();
     
     /// <inheritdoc cref="ITokensEnumerator.Expect" />
-    public Token Expect(string tag, string? value = null)
+    public Token Expect(TokenType type, string? value = null)
     {
-        var current = CheckCurrentNotNull(tag, value);
+        var current = CheckCurrentNotNull(type, value);
         
-        if (!CurrentIs(tag))
-            throw new ParserException(_enumerator.Current.Segment, tag, _enumerator.Current);
+        if (!CurrentIs(type))
+            throw new ParserException(_enumerator.Current.Segment, type.Value, _enumerator.Current);
         
         if (_enumerator.Current.Value != (value ?? _enumerator.Current.Value))
             throw new ParserException(_enumerator.Current.Segment, value, _enumerator.Current);
@@ -54,51 +49,50 @@ internal class TokensEnumerator : ITokensEnumerator
     }
     
     /// <inheritdoc cref="ITokensEnumerator.Expect" />
-    public Token ExpectAny(string[] tags)
+    public Token ExpectAny(TokenType[] types)
     {
-        foreach (var tag in tags)
+        foreach (var type in types)
         {
-            var current = CheckCurrentNotNull(tag);
-            if (!CurrentIs(tag))
+            var current = CheckCurrentNotNull(type);
+            if (!CurrentIs(type))
                 continue;
             
             _enumerator.MoveNext();
             return current;
         }
         
-        throw new ParserException(_enumerator.Current.Segment, tags);
+        throw new ParserException(_enumerator.Current.Segment, types);
     }
     
     /// <inheritdoc cref="ITokensEnumerator.ExpectOperator" />
-    public Token ExpectOperator(Operator? @operator = null) => Expect(OperatorTag, @operator?.Value);
+    public Token ExpectOperator(Operator? @operator = null) => Expect(TokenType.Operator, @operator?.Value);
     
     /// <inheritdoc cref="ITokensEnumerator.ExpectKeyword" />
-    public Token ExpectKeyword(Keyword keyword) => Expect(KeywordTag, keyword.Value);
+    public Token ExpectKeyword(Keyword keyword) => Expect(TokenType.Keyword, keyword.Value);
     
     /// <inheritdoc cref="ITokensEnumerator.CurrentIs" />
-    public bool CurrentIs(string tag, string? value = null)
+    public bool CurrentIs(TokenType type, string? value = null)
     {
-        var current = CheckCurrentNotNull(tag, value);
-        return current.Type == _provider.GetTokenTypeByTag(tag) &&
-               (value is null || value == current.Value);
+        var current = CheckCurrentNotNull(type, value);
+        return current.Type == type && (value is null || value == current.Value);
     }
     
     /// <inheritdoc cref="ITokensEnumerator.CurrentIsAny" />
-    public bool CurrentIsAny(string[] tags) => tags.Any(tag => CurrentIs(tag));
+    public bool CurrentIsAny(TokenType[] types) => types.Any(type => CurrentIs(type));
     
     /// <inheritdoc cref="ITokensEnumerator.CurrentIsOperator" />
-    public bool CurrentIsOperator(Operator? @operator = null) => CurrentIs(OperatorTag, @operator?.Value);
+    public bool CurrentIsOperator(Operator? @operator = null) => CurrentIs(TokenType.Operator, @operator?.Value);
     
     /// <inheritdoc cref="ITokensEnumerator.CurrentIsKeyword" />
-    public bool CurrentIsKeyword(Keyword? keyword = null) => CurrentIs(KeywordTag, keyword?.Value);
+    public bool CurrentIsKeyword(Keyword? keyword = null) => CurrentIs(TokenType.Keyword, keyword?.Value);
     
     /// <inheritdoc cref="ITokensEnumerator.ForCurrent{T}" />
-    public T ForCurrent<T>(params (string, Func<string, T>)[] tuples)
+    public T ForCurrent<T>(params (TokenType, Func<TokenType, T>)[] tuples)
     {
-        foreach (var (tag, func) in tuples)
+        foreach (var (type, func) in tuples)
         {
-            if (CurrentIs(tag))
-                return func(tag);
+            if (CurrentIs(type))
+                return func(type);
         }
         
         throw new UnexpectedTokenException(_enumerator.Current);
@@ -116,12 +110,12 @@ internal class TokensEnumerator : ITokensEnumerator
         throw new UnexpectedTokenException(_enumerator.Current);
     }
     
-    private Token CheckCurrentNotNull(string tag, string? value = null)
+    private Token CheckCurrentNotNull(TokenType type, string? value = null)
     {
         _enumerator.Current.CheckNotNull(
             errorMessage: "Неожиданный конец строки. Ожидался тег: " +
-                          $"'{tag}{(value is null ? string.Empty : $"-{value}")}'",
-            parameterName: nameof(tag));
+                          $"'{type.Value}{(value is null ? string.Empty : $"-{value}")}'",
+            parameterName: nameof(type));
         
         return _enumerator.Current;
     }

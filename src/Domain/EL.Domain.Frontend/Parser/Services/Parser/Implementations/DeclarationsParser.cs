@@ -1,4 +1,5 @@
-﻿using EL.Domain.Frontend.Lexer;
+﻿using EL.Domain.Share.Dictionaries;
+using EL.Domain.Frontend.Lexer;
 using EL.Domain.Frontend.Parser.Exceptions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
@@ -7,6 +8,7 @@ using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.PrimaryExpr
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
 using ElType = EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.ElType;
 using static EL.Domain.Share.Dictionaries.TokenTypes;
+using static EL.Domain.Share.Dictionaries.TokenType;
 using static EL.Domain.Share.Dictionaries.Keyword;
 // ReSharper disable InvertIf
 
@@ -20,16 +22,16 @@ internal partial class TopDownParser
         if (_tokens.CurrentIsKeyword(Class))
             return ParseClassDeclaration();
         
-        if (_tokens.CurrentIsAny(ElAllTypesTokensTags))
+        if (_tokens.CurrentIsAny(ElAllTypesTokens))
         {
             return _tokens.ForCurrent(
-                (VoidTypeTag, _ => ParseVoidType()),
-                (VarTypeTag, _ => ParseVarType()),
-                (DoubleTypeTag, ParseForType),
-                (IntTypeTag, ParseForType),
-                (LongTypeTag, ParseForType),
-                (BooleanTypeTag, ParseForType),
-                (StringTypeTag, ParseForType));
+                (VoidType, _ => ParseVoidType()),
+                (VarType, _ => ParseVarType()),
+                (DoubleType, ParseForType),
+                (IntType, ParseForType),
+                (LongType, ParseForType),
+                (BooleanType, ParseForType),
+                (StringType, ParseForType));
         }
         
         throw new UnexpectedTokenException(_tokens.Current);
@@ -39,8 +41,8 @@ internal partial class TopDownParser
     {
         _tokens.ExpectKeyword(Namespace);
         
-        var identifierToken = _tokens.Expect(IdentifierTag);
-        _tokens.Expect(SemicolonTag);
+        var identifierToken = _tokens.Expect(Identifier);
+        _tokens.Expect(Semicolon);
         
         var statements = ParseStatementList().ToList();
         if (statements.Any(item => item is not ClassDeclaration))
@@ -55,7 +57,7 @@ internal partial class TopDownParser
     {
         _tokens.ExpectKeyword(Class);
         
-        var identifierToken = _tokens.Expect(IdentifierTag);
+        var identifierToken = _tokens.Expect(Identifier);
         var body = ParseStatement();
         return new ClassDeclaration(
             new IdentifierExpression(identifierToken.Value),
@@ -64,58 +66,58 @@ internal partial class TopDownParser
     
     private FunctionDeclaration ParseVoidType()
     {
-        _tokens.Expect(VoidTypeTag);
+        _tokens.Expect(VoidType);
         
-        var identifierToken = _tokens.Expect(IdentifierTag);
-        return ParseFunctionDeclaration(VoidTypeTag, identifierToken.Value);
+        var identifierToken = _tokens.Expect(Identifier);
+        return ParseFunctionDeclaration(VoidType, identifierToken.Value);
     }
     
     private VariableDeclaration ParseVarType()
     {
-        _tokens.Expect(VarTypeTag);
+        _tokens.Expect(VarType);
         
-        var identifierToken = _tokens.Expect(IdentifierTag);
-        return ParseVariableDeclaration(VarTypeTag, identifierToken);
+        var identifierToken = _tokens.Expect(Identifier);
+        return ParseVariableDeclaration(VarType, identifierToken);
     }
     
-    private Declaration ParseForType(string typeTag)
+    private Declaration ParseForType(TokenType type)
     {
-        _tokens.Expect(typeTag);
+        _tokens.Expect(type);
         
-        var identifierToken = _tokens.Expect(IdentifierTag);
-        if (_tokens.CurrentIs(SemicolonTag))
+        var identifierToken = _tokens.Expect(Identifier);
+        if (_tokens.CurrentIs(Semicolon))
         {
             return new VariableDeclaration(
-                new ElType(new IdentifierExpression(typeTag)),
+                new ElType(new IdentifierExpression(type.Value)),
                 new IdentifierExpression(identifierToken.Value));
         }
         
-        if (_tokens.CurrentIs(LeftParenTag))
-            return ParseFunctionDeclaration(typeTag, identifierToken.Value);
+        if (_tokens.CurrentIs(LeftParen))
+            return ParseFunctionDeclaration(type, identifierToken.Value);
         
-        return ParseVariableDeclaration(typeTag, identifierToken);
+        return ParseVariableDeclaration(type, identifierToken);
     }
     
-    private VariableDeclaration ParseVariableDeclaration(string type, Token token)
+    private VariableDeclaration ParseVariableDeclaration(TokenType type, Token token)
     {
-        _tokens.Expect(AssignTag);
+        _tokens.Expect(Assign);
         
         var expression = ParseExpression();
         return new VariableDeclaration(
-            new ElType(new IdentifierExpression(type)),
+            new ElType(new IdentifierExpression(type.Value)),
             new IdentifierExpression(token.Value),
             new AssignmentExpression(new IdentifierExpression(token.Value), expression));
     }
     
     private FunctionDeclaration ParseFunctionDeclaration(
-        string returnType,
+        TokenType returnType,
         string functionName)
     {
         var parameters = ParseFunctionParameters().ToList();
         var body = ParseStatement();
         
         return new FunctionDeclaration(
-            new ElType(new IdentifierExpression(returnType)),
+            new ElType(new IdentifierExpression(returnType.Value)),
             new IdentifierExpression(functionName),
             parameters,
             new StatementsBlock([body]));
@@ -123,30 +125,30 @@ internal partial class TopDownParser
     
     private IEnumerable<FunctionParameterDeclaration> ParseFunctionParameters()
     {
-        _tokens.Expect(LeftParenTag);
+        _tokens.Expect(LeftParen);
         
-        if (_tokens.CurrentIs(RightParenTag))
+        if (_tokens.CurrentIs(RightParen))
         {
-            _tokens.Expect(RightParenTag);
+            _tokens.Expect(RightParen);
             yield break;
         }
         
         while (true)
         {
-            var typeToken = _tokens.ExpectAny(ElConcreteTypesTokensTags);
-            var nameToken = _tokens.Expect(IdentifierTag);
+            var typeToken = _tokens.ExpectAny(ElConcreteTypesTokens);
+            var nameToken = _tokens.Expect(Identifier);
             
             yield return new FunctionParameterDeclaration(
                 new ElType(new IdentifierExpression(typeToken.Value)),
                 new IdentifierExpression(nameToken.Value));
             
-            if (_tokens.CurrentIs(RightParenTag))
+            if (_tokens.CurrentIs(RightParen))
             {
-                _tokens.Expect(RightParenTag);
+                _tokens.Expect(RightParen);
                 yield break;
             }
             
-            _tokens.Expect(CommaTag);
+            _tokens.Expect(Comma);
         }
     }
 }
