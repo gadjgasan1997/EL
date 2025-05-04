@@ -6,7 +6,6 @@ using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.LeftHandSideExpressions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.PrimaryExpressions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
-using ElType = EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.ElType;
 using static EL.Domain.Share.Dictionaries.TokenTypes;
 using static EL.Domain.Share.Dictionaries.TokenType;
 using static EL.Domain.Share.Dictionaries.Keyword;
@@ -88,7 +87,7 @@ internal partial class TopDownParser
         if (_tokens.CurrentIs(Semicolon))
         {
             return new VariableDeclaration(
-                new ElType(new IdentifierExpression(type.Value)),
+                new ElTypeNode(new IdentifierExpression(type.Value)),
                 new IdentifierExpression(identifierToken.Value));
         }
         
@@ -104,7 +103,7 @@ internal partial class TopDownParser
         
         var expression = ParseExpression();
         return new VariableDeclaration(
-            new ElType(new IdentifierExpression(type.Value)),
+            new ElTypeNode(new IdentifierExpression(type.Value)),
             new IdentifierExpression(token.Value),
             new AssignmentExpression(new IdentifierExpression(token.Value), expression));
     }
@@ -117,7 +116,7 @@ internal partial class TopDownParser
         var body = ParseStatement();
         
         return new FunctionDeclaration(
-            new ElType(new IdentifierExpression(returnType.Value)),
+            new ElTypeNode(new IdentifierExpression(returnType.Value)),
             new IdentifierExpression(functionName),
             parameters,
             new StatementsBlock([body]));
@@ -139,7 +138,7 @@ internal partial class TopDownParser
             var nameToken = _tokens.Expect(Identifier);
             
             yield return new FunctionParameterDeclaration(
-                new ElType(new IdentifierExpression(typeToken.Value)),
+                new ElTypeNode(new IdentifierExpression(typeToken.Value)),
                 new IdentifierExpression(nameToken.Value));
             
             if (_tokens.CurrentIs(RightParen))

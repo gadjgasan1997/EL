@@ -11,7 +11,7 @@ public class VariableDeclaration : Declaration
     /// <summary>
     /// Тип
     /// </summary>
-    public ElType Type { get; }
+    public ElTypeNode Type { get; }
     
     /// <summary>
     /// Название
@@ -24,7 +24,7 @@ public class VariableDeclaration : Declaration
     public AssignmentExpression? InitializeExpression { get; }
     
     public VariableDeclaration(
-        ElType type,
+        ElTypeNode type,
         IdentifierExpression name,
         AssignmentExpression? initializeExpression = null)
     {

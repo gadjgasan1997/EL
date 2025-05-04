@@ -10,7 +10,7 @@ public class FunctionParameterDeclaration : Declaration
     /// <summary>
     /// Тип
     /// </summary>
-    public ElType Type { get; }
+    public ElTypeNode Type { get; }
     
     /// <summary>
     /// Название
@@ -18,7 +18,7 @@ public class FunctionParameterDeclaration : Declaration
     public IdentifierExpression Name { get; }
     
     public FunctionParameterDeclaration(
-        ElType type,
+        ElTypeNode type,
         IdentifierExpression name)
     {
         Type = type;

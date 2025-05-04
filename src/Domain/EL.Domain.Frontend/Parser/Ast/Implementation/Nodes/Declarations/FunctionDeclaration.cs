@@ -11,7 +11,7 @@ public class FunctionDeclaration : Declaration
     /// <summary>
     /// Возвращаемый тип
     /// </summary>
-    public ElType ReturnType { get; }
+    public ElTypeNode ReturnType { get; }
     
     /// <summary>
     /// Название
@@ -34,7 +34,7 @@ public class FunctionDeclaration : Declaration
     public IReadOnlyCollection<ReturnStatement> ReturnStatements { get; }
     
     public FunctionDeclaration(
-        ElType returnType,
+        ElTypeNode returnType,
         IdentifierExpression name,
         List<FunctionParameterDeclaration> parameters,
         StatementsBlock body)

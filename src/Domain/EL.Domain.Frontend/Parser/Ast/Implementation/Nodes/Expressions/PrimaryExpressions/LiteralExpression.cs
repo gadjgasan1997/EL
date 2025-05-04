@@ -8,14 +8,14 @@ public class LiteralExpression : PrimaryExpression
     /// <summary>
     /// Тип
     /// </summary>
-    public ElType Type { get; set; }
+    public ElTypeNode Type { get; set; }
     
     /// <summary>
     /// Значение
     /// </summary>
     public object? Value { get; }
     
-    public LiteralExpression(ElType type, object? value)
+    public LiteralExpression(ElTypeNode type, object? value)
     {
         Type = type;
         Value = value;

@@ -6,7 +6,7 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes;
 /// Тип языка El
 /// </summary>
 /// <param name="Id">Id</param>
-public record ElType(IdentifierExpression Id)
+public record ElTypeNode(IdentifierExpression Id)
 {
     /// <inheritdoc cref="object.ToString" />
     public override string ToString() => Id;

@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 using EL.Domain.Share.Dictionaries;
 using EL.Domain.Frontend.Parser.Exceptions;
+using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.LeftHandSideExpressions;
 using EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.PrimaryExpressions;
-using ElType = EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.ElType;
 using static EL.Domain.Share.Dictionaries.TokenType;
 using static EL.Domain.Share.Dictionaries.TokenTypes;
 using static EL.Domain.Share.Dictionaries.Operator;
@@ -238,25 +238,33 @@ internal partial class TopDownParser
         return _tokens.ForCurrent(
             (DoubleLiteral, _ => ParseLiteralCore(
                 DoubleLiteral,
+                ElType.DoubleType,
                 value => double.Parse(value, InvariantCulture))),
             (IntLiteral, _ => ParseLiteralCore(
                 IntLiteral,
+                ElType.IntType,
                 value => int.Parse(value, InvariantCulture))),
             (BooleanLiteral, _ => ParseLiteralCore(
                 BooleanLiteral,
+                ElType.BooleanType,
                 value => bool.Parse(value))),
             (NullLiteral, _ => ParseLiteralCore(
                 NullLiteral,
+                ElType.NullType,
                 _ => null)),
             (StringLiteral, _ => ParseLiteralCore(
                 StringLiteral,
+                ElType.StringType,
                 value => Regex.Unescape(value.Trim('"')))));
         
-        LiteralExpression ParseLiteralCore(TokenType tokenType, Func<string, object?> func)
+        LiteralExpression ParseLiteralCore(
+            TokenType tokenType,
+            ElType elType,
+            Func<string, object?> func)
         {
             var token = _tokens.Expect(tokenType);
             return new LiteralExpression(
-                new ElType(new IdentifierExpression(tokenType.Value)),
+                new ElTypeNode(new IdentifierExpression(elType.Value)),
                 func(token.Value));
         }
     }
