@@ -1,7 +1,8 @@
 ﻿using EL;
+using EL.Compiler;
+using EL.Extensions;
 using EL.CommonUtils.Extensions;
-using EL.Infrastructure.Extensions;
-using EL.Infrastructure.Services.Executor;
+using EL.Domain.Share.Dictionaries;
 using System.CommandLine.Parsing;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,14 +17,6 @@ internal static partial class Program
         ExecuteCommand command = new();
         command.SetAction(result =>
         {
-            var compiledAssemblyName = result
-                .GetValue(command.CompiledAssemblyName)
-                .CheckNotNullOrEmpty(nameof(command.CompiledAssemblyName));
-            
-            var compiledAssemblyOutputPath = result
-                .GetValue(command.CompiledAssemblyOutputPath)
-                .CheckNotNullOrEmpty(nameof(command.CompiledAssemblyOutputPath));
-            
             var projectDirectory = result
                 .GetValue(command.ProjectDirectory)
                 .CheckNotNullOrEmpty(nameof(command.ProjectDirectory));
@@ -34,26 +27,34 @@ internal static partial class Program
             
             var filesRelativePaths = filesRelativePathsString.Split(",");
             
+            var compiledAssemblyName = result
+                .GetValue(command.CompiledAssemblyName)
+                .CheckNotNullOrEmpty(nameof(command.CompiledAssemblyName));
+            
+            var compiledAssemblyOutputPath = result.GetValue(command.CompiledAssemblyOutputPath);
+            var compileInParallel = result.GetValue(command.CompileInParallel);
+            
+            var outputTypeString = result.GetValue(command.OutputType);
+            var outputType = outputTypeString == "Console" ? FileExtension.Executable : FileExtension.Library;
+            
             using var serviceProvider = GetServiceProvider();
-            var executor = serviceProvider.GetRequiredService<IExecutor>();
-            return executor.Invoke(
+            var compiler = serviceProvider.GetRequiredService<ICompiler>();
+            return compiler.Compile(
+                projectDirectory,
+                filesRelativePaths,
                 compiledAssemblyName,
                 compiledAssemblyOutputPath,
-                projectDirectory,
-                filesRelativePaths);
+                compileInParallel,
+                outputType);
         });
         
         return command;
     }
     
-    private static ServiceProvider GetServiceProvider(Action<IServiceCollection>? configureServices = null)
+    private static ServiceProvider GetServiceProvider()
     {
         var services = new ServiceCollection();
-        services
-            .AddLogging()
-            .AddInfrastructure();
-        
-        configureServices?.Invoke(services);
+        services.AddServices();
         return services.BuildServiceProvider();
     }
 }

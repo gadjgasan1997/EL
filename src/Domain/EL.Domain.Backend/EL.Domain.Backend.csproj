@@ -5,5 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\EL.Domain.Frontend\EL.Domain.Frontend.csproj" />
+      <ProjectReference Include="..\EL.Domain.Share\EL.Domain.Share.csproj" />
+    </ItemGroup>
 
 </Project>

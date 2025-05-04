@@ -6,7 +6,7 @@ namespace EL.Domain.Frontend.Lexer.Services.TokenTypesProvider;
 /// <summary>
 /// Провайдер получения токенов
 /// </summary>
-internal interface ITokenTypesProvider : IEnumerable<TokenTypes.TokenType>, IDomainService
+internal interface ITokenTypesProvider : IEnumerable<TokenTypes.TokenType>, ISingletonService
 {
     /// <summary>
     /// Возвращает тип токена по тегу

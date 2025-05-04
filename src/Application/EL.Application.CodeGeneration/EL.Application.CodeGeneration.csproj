@@ -8,6 +8,15 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\EL.Domain.Backend\EL.Domain.Backend.csproj" />
+      <ProjectReference Include="..\..\Domain\EL.Domain.Frontend\EL.Domain.Frontend.csproj" />
+      <ProjectReference Include="..\..\Domain\EL.Domain.Share\EL.Domain.Share.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\EL.Infrastructure\EL.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\Utils\EL.CommonUtils\EL.CommonUtils.csproj" />
     </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ namespace EL.Domain.Frontend.Lexer.CodeCoordinates;
 /// <summary>
 /// Сервис получения координат кода
 /// </summary>
-internal interface ICoordinatesService : IDomainService
+internal interface ICoordinatesService : ISingletonService
 {
     /// <summary>
     /// Возвращает список индексов переноса строки внутри фрагмента исходного кода<br/>

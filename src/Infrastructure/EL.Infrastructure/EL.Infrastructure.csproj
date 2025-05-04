@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Domain\EL.Domain.Backend\EL.Domain.Backend.csproj" />
       <ProjectReference Include="..\..\Domain\EL.Domain.Frontend\EL.Domain.Frontend.csproj" />
       <ProjectReference Include="..\..\Utils\EL.CommonUtils\EL.CommonUtils.csproj" />
       <ProjectReference

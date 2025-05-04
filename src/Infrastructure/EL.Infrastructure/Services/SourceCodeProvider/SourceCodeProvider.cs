@@ -1,24 +1,36 @@
 ﻿using System.IO.Abstractions;
 using EL.CommonUtils.Extensions;
+using EL.Domain.Share.Dictionaries;
 
 namespace EL.Infrastructure.Services.SourceCodeProvider;
 
 /// <inheritdoc cref="ISourceCodeProvider" />
 internal class SourceCodeProvider(IFileSystem fileSystem) : ISourceCodeProvider
 {
+    private const string ALL_FILES = "<all_files>";
+    
     /// <inheritdoc cref="ISourceCodeProvider.GetFilesContent" />
-    public IEnumerable<string> GetFilesContent(
+    public IEnumerable<SourceCodeFile> GetFilesContent(
         string projectDirectory,
         string[] filesRelativePaths)
     {
         projectDirectory.CheckNotNullOrEmpty();
         
-        foreach (var fileRelativePath in filesRelativePaths)
+        if (filesRelativePaths is [ALL_FILES])
         {
-            fileRelativePath.CheckNotNullOrEmpty();
+            var fileMask = $"*.{FileExtension.EL.Value}";
+            foreach (var path in Directory.GetFiles(projectDirectory, fileMask))
+                yield return new SourceCodeFile(path, fileSystem.File.ReadAllText(path));
             
-            var inputFilePath = Path.Combine(projectDirectory, fileRelativePath);
-            yield return fileSystem.File.ReadAllText(inputFilePath);
+            yield break;
+        }
+        
+        foreach (var path in filesRelativePaths)
+        {
+            path.CheckNotNullOrEmpty();
+            
+            var inputFilePath = Path.Combine(projectDirectory, path);
+            yield return new SourceCodeFile(path, fileSystem.File.ReadAllText(inputFilePath));
         }
     }
 }

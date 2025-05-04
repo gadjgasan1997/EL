@@ -6,7 +6,7 @@ namespace EL.Domain.Frontend.Lexer.Services.RegexProvider;
 /// <summary>
 /// Провайдер получения регулярного выражения
 /// </summary>
-public interface IRegexProvider : IDomainService
+public interface IRegexProvider : ISingletonService
 {
     /// <summary>
     /// Выражение

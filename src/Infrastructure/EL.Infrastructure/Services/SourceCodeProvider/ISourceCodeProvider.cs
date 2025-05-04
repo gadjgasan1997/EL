@@ -3,7 +3,7 @@
 /// <summary>
 /// Провайдер получения исходного кода
 /// </summary>
-internal interface ISourceCodeProvider
+public interface ISourceCodeProvider
 {
     /// <summary>
     /// Возвращает содержимое файлов
@@ -11,5 +11,7 @@ internal interface ISourceCodeProvider
     /// <param name="projectDirectory">Директория проекта</param>
     /// <param name="filesRelativePaths">Список относительных путей к файлам</param>
     /// <returns></returns>
-    IEnumerable<string> GetFilesContent(string projectDirectory, string[] filesRelativePaths);
+    IEnumerable<SourceCodeFile> GetFilesContent(
+        string projectDirectory,
+        string[] filesRelativePaths);
 }

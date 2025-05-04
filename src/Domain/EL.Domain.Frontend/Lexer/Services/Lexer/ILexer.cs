@@ -6,7 +6,7 @@ namespace EL.Domain.Frontend.Lexer.Services.Lexer;
 /// <summary>
 /// Лексер
 /// </summary>
-public interface ILexer : IDomainService
+public interface ILexer : ISingletonService
 {
     /// <summary>
     /// Возвращает список токенов
