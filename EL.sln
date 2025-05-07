@@ -41,9 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleELProject", "SampleEL
 		samples\SampleELProject\if.el = samples\SampleELProject\if.el
 		samples\SampleELProject\while.el = samples\SampleELProject\while.el
 		samples\SampleELProject\for.el = samples\SampleELProject\for.el
-		samples\SampleELProject\call.el = samples\SampleELProject\call.el
 		samples\SampleELProject\functions.el = samples\SampleELProject\functions.el
-		samples\SampleELProject\checkSemicolon.el = samples\SampleELProject\checkSemicolon.el
 		samples\SampleELProject\types.el = samples\SampleELProject\types.el
 	EndProjectSection
 EndProject

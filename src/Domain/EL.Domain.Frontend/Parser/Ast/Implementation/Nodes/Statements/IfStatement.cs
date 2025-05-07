@@ -5,7 +5,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
 /// <summary>
 /// Выражение условия if
 /// </summary>
-public class IfStatement : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class IfStatement : Statement
 {
     /// <summary>
     /// Условие
@@ -15,14 +16,17 @@ public class IfStatement : Statement
     /// <summary>
     /// Действие, выполняемое в случае, если условие равно true
     /// </summary>
-    public Statement Then { get; }
+    public StatementsBlock Then { get; }
     
     /// <summary>
     /// Действие, выполняемое в случае, если условие равно false
     /// </summary>
-    public Statement? Else { get; }
+    public StatementsBlock? Else { get; }
     
-    public IfStatement(Expression condition, Statement then, Statement? @else = null)
+    public IfStatement(
+        Expression condition,
+        StatementsBlock then,
+        StatementsBlock? @else = null)
     {
         Condition = condition;
         Condition.Parent = this;

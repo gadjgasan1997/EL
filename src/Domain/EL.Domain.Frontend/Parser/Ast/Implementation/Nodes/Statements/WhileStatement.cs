@@ -5,7 +5,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
 /// <summary>
 /// Выражение цикла while
 /// </summary>
-public class WhileStatement : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class WhileStatement : Statement
 {
     /// <summary>
     /// Условие
@@ -15,9 +16,9 @@ public class WhileStatement : Statement
     /// <summary>
     /// Действие, выполняемое в случае, если условие равно true
     /// </summary>
-    public Statement Then { get; }
+    public StatementsBlock Then { get; }
     
-    public WhileStatement(Expression condition, Statement then)
+    public WhileStatement(Expression condition, StatementsBlock then)
     {
         Condition = condition;
         Condition.Parent = this;

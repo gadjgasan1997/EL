@@ -1,4 +1,5 @@
 ﻿using EL.Domain.Share.SeedWork;
+using static EL.Domain.Share.Dictionaries.ElType;
 
 namespace EL.Domain.Share.Dictionaries;
 
@@ -61,37 +62,37 @@ public class TokenType : Enumeration
         priority: 60);
     
     public static TokenType VoidType { get; } = new(
-        value: "VoidType",
+        value: VOID_TYPE,
         pattern: "(?<![a-zA-Z0-9])(void)(?![a-zA-Z0-9])",
         priority: 61);
     
     public static TokenType VarType { get; } = new(
-        value: "VarType",
+        value: VAR_TYPE,
         pattern: "(?<![a-zA-Z0-9])(var)(?![a-zA-Z0-9])",
         priority: 62);
     
     public static TokenType IntType { get; } = new(
-        value: "IntType",
+        value: INT_TYPE,
         pattern: "(?<![a-zA-Z0-9])(int)(?![a-zA-Z0-9])",
         priority: 63);
     
     public static TokenType LongType { get; } = new(
-        value: "LongType",
+        value: LONG_TYPE,
         pattern: "(?<![a-zA-Z0-9])(long)(?![a-zA-Z0-9])",
         priority: 64);
     
     public static TokenType DoubleType { get; } = new(
-        value: "DoubleType",
+        value: DOUBLE_TYPE,
         pattern: "(?<![a-zA-Z0-9])(double)(?![a-zA-Z0-9])",
         priority: 65);
     
     public static TokenType BooleanType { get; } = new(
-        value: "BooleanType",
+        value: BOOLEAN_TYPE,
         pattern: "(?<![a-zA-Z0-9])(bool)(?![a-zA-Z0-9])",
         priority: 66);
     
     public static TokenType StringType { get; } = new(
-        value: "StringType",
+        value: STRING_TYPE,
         pattern: "(?<![a-zA-Z0-9])(string)(?![a-zA-Z0-9])",
         priority: 67);
     

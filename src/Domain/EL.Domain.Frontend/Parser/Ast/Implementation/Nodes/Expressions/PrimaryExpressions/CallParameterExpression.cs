@@ -3,7 +3,8 @@
 /// <summary>
 /// Параметр вызова функции
 /// </summary>
-public class CallParameterExpression : PrimaryExpression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class CallParameterExpression : PrimaryExpression
 {
     /// <summary>
     /// Значение

@@ -5,7 +5,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
 /// <summary>
 /// Определение параметра
 /// </summary>
-public class FunctionParameterDeclaration : Declaration
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class FunctionParameterDeclaration : Declaration
 {
     /// <summary>
     /// Тип
@@ -23,11 +24,15 @@ public class FunctionParameterDeclaration : Declaration
     {
         Type = type;
         Name = name;
+        Name.Parent = this;
     }
+    
+    /// <inheritdoc cref="AbstractSyntaxTreeNode.Children" />
+    protected override IReadOnlyList<IAbstractSyntaxTreeNode> Children => [Name];
     
     /// <inheritdoc cref="StatementListItem.NeedSemicolon" />
     public override bool NeedSemicolon => false;
     
     /// <inheritdoc cref="AbstractSyntaxTreeNode.Children" />
-    protected override string NodeRepresentation() => $"parameter::{Name.Name}";
+    protected override string NodeRepresentation() => $"parameter::{Name}";
 }

@@ -6,12 +6,13 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
 /// <summary>
 /// Определение класса
 /// </summary>
-public class ClassDeclaration : Declaration
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class ClassDeclaration : Declaration
 {
     /// <summary>
     /// Название
     /// </summary>
-    private IdentifierExpression Name { get; }
+    public IdentifierExpression Name { get; }
     
     /// <summary>
     /// Тело
@@ -21,13 +22,14 @@ public class ClassDeclaration : Declaration
     /// <summary>
     /// Функции
     /// </summary>
-    public IReadOnlyCollection<FunctionDeclaration> Functions { get; }
+    public IReadOnlyList<FunctionDeclaration> Functions { get; }
     
     public ClassDeclaration(
         IdentifierExpression name,
         StatementsBlock body)
     {
         Name = name;
+        Name.Parent = this;
         
         Body = body;
         Body.Parent = this;
@@ -42,5 +44,5 @@ public class ClassDeclaration : Declaration
     public override bool NeedSemicolon => false;
     
     /// <inheritdoc cref="Statement.NodeRepresentation" />
-    protected override string NodeRepresentation() => $"class::{Name.Name}";
+    protected override string NodeRepresentation() => $"class::{Name}";
 }

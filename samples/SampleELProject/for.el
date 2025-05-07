@@ -1,19 +1,19 @@
 namespace samples;
 
-class type
+class sampleFor
 {
     void functionFor()
     {
-        for (var x = 0; x < 10; x++)
+        for (var x1 = 0; x1 < 10; x1++)
         {
             for (var i = 0; i < 5; i++)
             {
             }
         }
         
-        for (var x = 0; x < 10;)
+        for (var x2 = 0; x2 < 10;)
         {
-            x++;
+            x2++;
             
             for (var i = 0; i < 5;)
             {
@@ -31,7 +31,6 @@ class type
             }
         }
         
-        int x = 0;
         for (; x < 10;)
         {
             x++;

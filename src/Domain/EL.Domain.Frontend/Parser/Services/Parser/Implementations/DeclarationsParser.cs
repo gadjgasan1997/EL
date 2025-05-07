@@ -57,10 +57,8 @@ internal partial class TopDownParser
         _tokens.ExpectKeyword(Class);
         
         var identifierToken = _tokens.Expect(Identifier);
-        var body = ParseStatement();
-        return new ClassDeclaration(
-            new IdentifierExpression(identifierToken.Value),
-            new StatementsBlock([body]));
+        var body = (StatementsBlock) ParseStatement();
+        return new ClassDeclaration(new IdentifierExpression(identifierToken.Value), body);
     }
     
     private FunctionDeclaration ParseVoidType()
@@ -113,13 +111,13 @@ internal partial class TopDownParser
         string functionName)
     {
         var parameters = ParseFunctionParameters().ToList();
-        var body = ParseStatement();
+        var body = (StatementsBlock) ParseStatement();
         
         return new FunctionDeclaration(
             new ElTypeNode(new IdentifierExpression(returnType.Value)),
             new IdentifierExpression(functionName),
             parameters,
-            new StatementsBlock([body]));
+            body);
     }
     
     private IEnumerable<FunctionParameterDeclaration> ParseFunctionParameters()

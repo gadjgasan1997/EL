@@ -3,18 +3,21 @@
 /// <summary>
 /// Блока кода
 /// </summary>
-public class StatementsBlock : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class StatementsBlock : Statement
 {
-    private readonly List<StatementListItem> _statements;
-    
-    /// <inheritdoc cref="AbstractSyntaxTreeNode.Children" />
-    protected override IReadOnlyList<IAbstractSyntaxTreeNode> Children => _statements;
+    public IReadOnlyList<StatementListItem> Statements { get; }
     
     public StatementsBlock(IEnumerable<StatementListItem> statements)
     {
-        _statements = statements.ToList();
-        _statements.ForEach(item => item.Parent = this);
+        Statements = statements.ToList();
+        
+        foreach (var statement in Statements)
+            statement.Parent = this;
     }
+    
+    /// <inheritdoc cref="AbstractSyntaxTreeNode.Children" />
+    protected override IReadOnlyList<IAbstractSyntaxTreeNode> Children => Statements;
     
     /// <inheritdoc cref="StatementListItem.NeedSemicolon" />
     public override bool NeedSemicolon => true;

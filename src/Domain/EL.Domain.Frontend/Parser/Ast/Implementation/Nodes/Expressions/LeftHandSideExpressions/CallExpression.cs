@@ -5,7 +5,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.LeftHan
 /// <summary>
 /// Определение вызова функции
 /// </summary>
-public class CallExpression : LeftHandSideExpression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public sealed partial class CallExpression : LeftHandSideExpression
 {
     /// <summary>
     /// Параметры
@@ -17,6 +18,7 @@ public class CallExpression : LeftHandSideExpression
         IReadOnlyCollection<CallParameterExpression> parameters)
     {
         Id = id;
+        Id.Parent = this;
         
         var list = new List<CallParameterExpression>(parameters);
         list.ForEach(parameter => parameter.Parent = this);
@@ -30,5 +32,5 @@ public class CallExpression : LeftHandSideExpression
     protected override IReadOnlyList<IAbstractSyntaxTreeNode> Children => Parameters.ToList();
     
     /// <inheritdoc cref="Statement.NodeRepresentation" />
-    protected override string NodeRepresentation() => $"call::{Id.Name}";
+    protected override string NodeRepresentation() => $"call::{Id}";
 }

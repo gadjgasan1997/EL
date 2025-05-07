@@ -1,21 +1,24 @@
-﻿namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions;
+﻿using EL.Domain.Share.Dictionaries;
+
+namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions;
 
 /// <summary>
 /// Унарное выражение
 /// </summary>
-public class UnaryExpression : Expression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class UnaryExpression : Expression
 {
     /// <summary>
     /// Оператор
     /// </summary>
-    public string Operator { get; }
+    public Operator Operator { get; }
     
     /// <summary>
     /// Выражение
     /// </summary>
     public Expression Expression { get; }
     
-    public UnaryExpression(string @operator, Expression expression)
+    public UnaryExpression(Operator @operator, Expression expression)
     {
         Operator = @operator;
         Expression = expression;
@@ -26,5 +29,5 @@ public class UnaryExpression : Expression
     protected override IReadOnlyList<IAbstractSyntaxTreeNode> Children => [Expression];
     
     /// <inheritdoc cref="Statement.NodeRepresentation" />
-    protected override string NodeRepresentation() => Operator;
+    protected override string NodeRepresentation() => Operator.Value;
 }

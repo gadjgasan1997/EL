@@ -77,12 +77,12 @@ internal partial class TopDownParser
         var expression = ParseExpression();
         _tokens.Expect(RightParen);
         
-        var statement = ParseStatement();
+        var statement = (StatementsBlock) ParseStatement();
         if (_tokens.CurrentIsKeyword(Else))
         {
             _tokens.ExpectKeyword(Else);
             
-            var @else = ParseStatement();
+            var @else = (StatementsBlock) ParseStatement();
             return new IfStatement(expression, statement, @else);
         }
         
@@ -97,7 +97,7 @@ internal partial class TopDownParser
         var expression = ParseExpression();
         _tokens.Expect(RightParen);
         
-        var statement = ParseStatement();
+        var statement = (StatementsBlock) ParseStatement();
         return new WhileStatement(expression, statement);
     }
     
@@ -115,7 +115,7 @@ internal partial class TopDownParser
         var iteration = _tokens.CurrentIs(RightParen) ? null : ParseExpression();
         _tokens.Expect(RightParen);
         
-        var body = ParseStatement();
+        var body = (StatementsBlock) ParseStatement();
         return new ForStatement(declaration, condition, iteration, body);
     }
     

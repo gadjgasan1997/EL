@@ -6,7 +6,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
 /// <summary>
 /// Определение функции
 /// </summary>
-public class FunctionDeclaration : Declaration
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class FunctionDeclaration : Declaration
 {
     /// <summary>
     /// Возвращаемый тип
@@ -16,12 +17,12 @@ public class FunctionDeclaration : Declaration
     /// <summary>
     /// Название
     /// </summary>
-    private IdentifierExpression Name { get; }
+    public IdentifierExpression Name { get; }
     
     /// <summary>
     /// Список параметров
     /// </summary>
-    public IReadOnlyCollection<FunctionParameterDeclaration> Parameters { get; }
+    public IReadOnlyList<FunctionParameterDeclaration> Parameters { get; }
     
     /// <summary>
     /// Тело
@@ -31,7 +32,7 @@ public class FunctionDeclaration : Declaration
     /// <summary>
     /// Выражения возврата результата
     /// </summary>
-    public IReadOnlyCollection<ReturnStatement> ReturnStatements { get; }
+    public IReadOnlyList<ReturnStatement> ReturnStatements { get; }
     
     public FunctionDeclaration(
         ElTypeNode returnType,
@@ -40,8 +41,13 @@ public class FunctionDeclaration : Declaration
         StatementsBlock body)
     {
         Name = name;
+        Name.Parent = this;
+        
         ReturnType = returnType;
         Parameters = parameters;
+        
+        foreach (var parameter in Parameters)
+            parameter.Parent = this;
         
         Body = body;
         Body.Parent = this;
@@ -56,5 +62,5 @@ public class FunctionDeclaration : Declaration
     public override bool NeedSemicolon => false;
     
     /// <inheritdoc cref="Statement.NodeRepresentation" />
-    protected override string NodeRepresentation() => $"function::{Name.Name}";
+    protected override string NodeRepresentation() => $"function::{Name}";
 }

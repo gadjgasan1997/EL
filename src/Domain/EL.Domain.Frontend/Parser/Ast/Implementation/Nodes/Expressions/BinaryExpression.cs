@@ -1,9 +1,12 @@
-﻿namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions;
+﻿using EL.Domain.Share.Dictionaries;
+
+namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions;
 
 /// <summary>
 /// Бинарное выражение
 /// </summary>
-public class BinaryExpression : Expression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class BinaryExpression : Expression
 {
     /// <summary>
     /// Левое выражение
@@ -13,14 +16,14 @@ public class BinaryExpression : Expression
     /// <summary>
     /// Оператор
     /// </summary>
-    public string Operator { get; }
+    public Operator Operator { get; }
     
     /// <summary>
     /// Правое выражение
     /// </summary>
     public Expression Right { get; }
     
-    public BinaryExpression(Expression left, string @operator, Expression right)
+    public BinaryExpression(Expression left, Operator @operator, Expression right)
     {
         Left = left;
         Left.Parent = this;
@@ -35,5 +38,5 @@ public class BinaryExpression : Expression
     protected override IReadOnlyList<IAbstractSyntaxTreeNode> Children => [Left, Right];
     
     /// <inheritdoc cref="Statement.NodeRepresentation" />
-    protected override string NodeRepresentation() => Operator;
+    protected override string NodeRepresentation() => Operator.Value;
 }

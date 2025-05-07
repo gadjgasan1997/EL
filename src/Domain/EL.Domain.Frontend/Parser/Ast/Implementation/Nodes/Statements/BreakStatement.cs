@@ -3,7 +3,8 @@
 /// <summary>
 /// Выражение break
 /// </summary>
-public class BreakStatement : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class BreakStatement : Statement
 {
     /// <inheritdoc cref="StatementListItem.NeedSemicolon" />
     public override bool NeedSemicolon => true;

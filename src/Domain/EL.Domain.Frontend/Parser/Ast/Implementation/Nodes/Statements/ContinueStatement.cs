@@ -3,7 +3,8 @@
 /// <summary>
 /// Выражение continue
 /// </summary>
-public class ContinueStatement : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class ContinueStatement : Statement
 {
     /// <inheritdoc cref="StatementListItem.NeedSemicolon" />
     public override bool NeedSemicolon => true;

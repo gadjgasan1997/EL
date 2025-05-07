@@ -1,6 +1,6 @@
 namespace samples;
 
-class type
+class sampleFunctions
 {
     void function1()
     {
@@ -25,6 +25,35 @@ class type
     string function5(int x)
     {
         return "test";
+    }
+    
+    string function5(int x, int y, int l, string value)
+    {
+        if (x == 0)
+        {
+            if (y < 10)
+            {
+                while (l < 5)
+                {
+                    l++;
+                    if (value == "my_value")
+                    {
+                        return "test";
+                    }
+                }
+                
+                return "test";
+            }
+            
+            else
+            {
+                return "test";
+            }
+        }
+        else
+        {
+            return "test";
+        }
     }
     
     string function6(string x, bool y)

@@ -3,7 +3,8 @@
 /// <summary>
 /// Выражение тернарного оператора
 /// </summary>
-public class TernaryOperatorExpression : Expression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class TernaryOperatorExpression : Expression
 {
     /// <summary>
     /// Условие

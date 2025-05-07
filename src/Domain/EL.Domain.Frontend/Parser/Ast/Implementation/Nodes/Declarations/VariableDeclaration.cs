@@ -6,7 +6,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Declarations;
 /// <summary>
 /// Определение переменной
 /// </summary>
-public class VariableDeclaration : Declaration
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class VariableDeclaration : Declaration
 {
     /// <summary>
     /// Тип
@@ -49,5 +50,5 @@ public class VariableDeclaration : Declaration
     public override bool NeedSemicolon => true;
     
     /// <inheritdoc cref="Statement.NodeRepresentation" />
-    protected override string NodeRepresentation() => $"variable::{Name.Name}";
+    protected override string NodeRepresentation() => $"variable::{Name}";
 }

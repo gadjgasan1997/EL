@@ -5,7 +5,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
 /// <summary>
 /// Выражение возврата результата
 /// </summary>
-public class ReturnStatement : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class ReturnStatement : Statement
 {
     /// <summary>
     /// Выражение возвращаемого результата

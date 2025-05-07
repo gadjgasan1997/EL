@@ -8,6 +8,12 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+      <PackageReference Include="Visitor.NET" Version="4.1.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Domain\EL.Domain.Frontend\EL.Domain.Frontend.csproj" />
+      <ProjectReference Include="..\..\Domain\EL.Domain.IR\EL.Domain.IR.csproj" />
     </ItemGroup>
 
 </Project>

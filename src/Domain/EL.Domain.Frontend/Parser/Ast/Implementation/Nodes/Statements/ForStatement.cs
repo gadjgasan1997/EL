@@ -6,7 +6,8 @@ namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Statements;
 /// <summary>
 /// Выражение цикла for
 /// </summary>
-public class ForStatement : Statement
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class ForStatement : Statement
 {
     /// <summary>
     /// Объявление переменной
@@ -26,13 +27,13 @@ public class ForStatement : Statement
     /// <summary>
     /// Тело
     /// </summary>
-    public Statement Body { get; }
+    public StatementsBlock Body { get; }
     
     public ForStatement(
         VariableDeclaration? declaration,
         Expression? condition,
         Expression? iteration,
-        Statement body)
+        StatementsBlock body)
     {
         Declaration = declaration;
         if (Declaration is not null)

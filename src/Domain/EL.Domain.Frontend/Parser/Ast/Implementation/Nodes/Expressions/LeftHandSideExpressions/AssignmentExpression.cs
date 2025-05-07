@@ -3,7 +3,8 @@
 /// <summary>
 /// Выражение присванивания
 /// </summary>
-public class AssignmentExpression : Expression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class AssignmentExpression : Expression
 {
     /// <summary>
     /// Конструкция, в которую происходит присваивание

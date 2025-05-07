@@ -1,9 +1,10 @@
 ﻿namespace EL.Domain.Frontend.Parser.Ast.Implementation.Nodes.Expressions.PrimaryExpressions;
 
 /// <summary>
-/// Выражение символа 
+/// Выражение символа
 /// </summary>
-public class LiteralExpression : PrimaryExpression
+[AutoVisitable<IAbstractSyntaxTreeNode>]
+public partial class LiteralExpression : PrimaryExpression
 {
     /// <summary>
     /// Тип

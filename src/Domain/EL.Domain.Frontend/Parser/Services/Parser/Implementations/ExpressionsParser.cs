@@ -146,9 +146,9 @@ internal partial class TopDownParser
     
     private Expression ParseUnary()
     {
-        if (_tokens.CurrentIsOperator(Not) || _tokens.CurrentIsOperator(Minus))
+        if (_tokens.CurrentIsOperator(Not))
         {
-            var token = _tokens.ExpectOperator();
+            var token = _tokens.ExpectOperator(Not);
             var expression = ParseUnary();
             return new UnaryExpression(token.Value, expression);
         }
