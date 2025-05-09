@@ -22,7 +22,7 @@ public static class ServiceCollectionExtensions
         services.RegisterDomainServices(assemblies);
         
         return services
-            .AddSingleton<ICompiler, Compiler.Compiler>()
+            .AddSingleton<ICompiler, DumpCompiler>()
             .AddLogging(builder => builder.ClearProviders().AddConsole())
             .AddStaticAnalysisServices()
             .AddCodeGenerationServices()

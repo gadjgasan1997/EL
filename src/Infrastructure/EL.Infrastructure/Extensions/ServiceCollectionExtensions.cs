@@ -1,4 +1,5 @@
 using System.IO.Abstractions;
+using EL.Infrastructure.Services.Emitter;
 using EL.Infrastructure.Services.SourceCodeProvider;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,7 @@ public static class ServiceCollectionExtensions
     /// <param name="services">Сервисы</param>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
+        services.AddSingleton<IEmitter, DumpEmitter>();
         services.AddSingleton<IFileSystem, FileSystem>();
         services.AddSingleton<ISourceCodeProvider, SourceCodeProvider>();
         return services;
